@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
                                     alignment: Alignment.bottomCenter,
                                     child: Container(
                                       width: 120,
-                                      height: 100,
+                                      height: 80,
                                       decoration: BoxDecoration(
                                           color: Colors.grey.shade700,
                                           borderRadius:
