@@ -1,7 +1,8 @@
-import 'package:apple_app/data/demo_data.dart';
 import 'package:flutter/material.dart';
 
+import 'widget/categories.dart';
 import 'widget/custom_app_bar.dart';
+import 'widget/product_grid.dart';
 import 'widget/slider.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,75 +21,95 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const CustomAppBar(),
-              const SizedBox(
-                height: 8,
-              ),
-              NewsSlider(size: size),
-              const SizedBox(
-                height: 10,
-              ),
-              const Text(
-                'Apple Store',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
-              ),
-              const Text(
-                'The best way to buy the products you love.',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(
-                      DemoData.categories.length,
-                      (index) => Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: SizedBox(
-                              width: 120,
-                              height: 120,
-                              child: Stack(
-                                children: [
-                                  Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: Container(
-                                      width: 120,
-                                      height: 80,
-                                      decoration: BoxDecoration(
-                                          color: Colors.grey.shade700,
-                                          borderRadius:
-                                              BorderRadius.circular(20)),
-                                    ),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: Column(
-                                      children: [
-                                        Image.asset(
-                                            DemoData.categories[index].image),
-                                        Text(
-                                          DemoData.categories[index].name,
-                                          style: const TextStyle(
-                                              color: Colors.white),
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          )),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const CustomAppBar(),
+                const SizedBox(
+                  height: 8,
                 ),
-              )
-            ],
+                NewsSlider(size: size),
+                const SizedBox(
+                  height: 15,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      color: Colors.black87,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        CustomIconButton(
+                          text: 'My Profile',
+                          icon: Icons.emoji_people,
+                          color: Colors.green,
+                          bgColor: Colors.green.shade100,
+                        ),
+                        CustomIconButton(
+                          text: 'Favorite',
+                          icon: Icons.favorite,
+                          color: Colors.red,
+                          bgColor: Colors.red.shade100,
+                        ),
+                        CustomIconButton(
+                          text: 'My Orders',
+                          icon: Icons.shopping_cart_rounded,
+                          color: Colors.blue,
+                          bgColor: Colors.blue.shade100,
+                        ),
+                        CustomIconButton(
+                          text: 'Web',
+                          icon: Icons.web,
+                          color: Colors.brown,
+                          bgColor: Colors.brown.shade100,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const Categories(),
+                const ProductGrid()
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class CustomIconButton extends StatelessWidget {
+  const CustomIconButton(
+      {super.key,
+      required this.text,
+      required this.icon,
+      this.color = Colors.blue,
+      this.bgColor = Colors.blue});
+
+  final String text;
+  final IconData icon;
+  final Color color;
+  final Color bgColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        CircleAvatar(
+            backgroundColor: bgColor,
+            child: Icon(
+              icon,
+              color: color,
+            )),
+        Text(
+          text,
+          style: const TextStyle(
+              fontSize: 12, fontWeight: FontWeight.w600, color: Colors.grey),
+        )
+      ],
     );
   }
 }
