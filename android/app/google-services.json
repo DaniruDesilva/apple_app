@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "670597760605",
+    "project_id": "apple-ecommerce1",
+    "storage_bucket": "apple-ecommerce1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:670597760605:android:c14ae14bb5e50f08f9efb4",
+        "android_client_info": {
+          "package_name": "lk.miracle.apple"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBA2e0GuCBFiEHCpntOoAm82etWjLfcelg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
