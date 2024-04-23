@@ -1,10 +1,10 @@
-import 'package:apple_app/screen/auth_screen/auth_screen.dart';
-import 'package:apple_app/screen/homepage/homepage.dart';
+import 'package:apple_app/screen/splash_screen/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AuthStateScreen extends StatelessWidget {
   const AuthStateScreen({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +20,13 @@ class AuthStateScreen extends StatelessWidget {
             return const SizedBox();
           }
           if (snapshot.data == null) {
-            return const AuthScreen();
+            return const SplashScreen(
+              type:'authScreen',
+            );
           } else {
-            return const HomePage();
+            return const SplashScreen(
+              type: '',
+            );
           }
         },
       ),

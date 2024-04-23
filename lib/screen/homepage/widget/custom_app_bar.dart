@@ -29,7 +29,7 @@ class CustomAppBar extends StatelessWidget {
             ),
             IconButton(
                 onPressed: () {
-                  AuthController.signOutUser();
+                  AuthController.signOutUser(context);
                 },
                 icon: const Icon(
                   Icons.exit_to_app,

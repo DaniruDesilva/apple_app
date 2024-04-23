@@ -1,30 +1,40 @@
+import 'package:apple_app/controllers/user_controller.dart';
+import 'package:apple_app/models/user_model.dart';
+import 'package:apple_app/providers/auth_screen_provider.dart';
 import 'package:apple_app/utils/custom_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
 
 class AuthController {
   static Future<void> createUserAccount(
-      String email, String password, BuildContext context) async {
+      String email, String password, String name, BuildContext context) async {
     try {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password)
-          .then((value) {
-        CustomDialog.dismissLoader();
+          .then((value) async {
+        UserModel user = UserModel(
+            name: name, email: value.user!.email!, uid: value.user!.uid);
+        await UserController().saveUserData(user, context);
       });
     } on FirebaseAuthException catch (e) {
       CustomDialog.dismissLoader();
-      if (e.code == 'email-already-in-use') {
-        CustomDialog.showDialog(context,
-            title: 'Somthing went wrong', content: 'Email already in use');
-      } else if (e.code == 'invalid-email') {
-        CustomDialog.showDialog(context,
-            title: 'Somthing went wrong', content: 'Invalid Email Address');
+      if (context.mounted) {
+        if (e.code == 'email-already-in-use') {
+          CustomDialog.showDialog(context,
+              title: 'Somthing went wrong', content: 'Email already in use');
+        } else if (e.code == 'invalid-email') {
+          CustomDialog.showDialog(context,
+              title: 'Somthing went wrong', content: 'Invalid Email Address');
+        }
       }
     } catch (e) {
       CustomDialog.dismissLoader();
-      CustomDialog.showDialog(context,
-          title: 'Somthing went wrong', content: e.toString());
+      if (context.mounted) {
+        CustomDialog.showDialog(context,
+            title: 'Somthing went wrong', content: e.toString());
+      }
     }
   }
 
@@ -35,28 +45,52 @@ class AuthController {
           .signInWithEmailAndPassword(email: email, password: password);
       CustomDialog.dismissLoader();
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        CustomDialog.showDialog(context,
-            title: 'Somthing went wrong',
-            content: 'No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        CustomDialog.showDialog(context,
-            title: 'Somthing went wrong',
-            content: 'Wrong password provided for that user.');
-      } else if (e.code == 'invalid-email') {
-        CustomDialog.showDialog(context,
-            title: 'Somthing went wrong', content: 'Invalid email');
+      if (context.mounted) {
+        if (e.code == 'user-not-found') {
+          CustomDialog.showDialog(context,
+              title: 'Somthing went wrong',
+              content: 'No user found for that email.');
+        } else if (e.code == 'wrong-password') {
+          CustomDialog.showDialog(context,
+              title: 'Somthing went wrong',
+              content: 'Wrong password provided for that user.');
+        } else if (e.code == 'invalid-email') {
+          CustomDialog.showDialog(context,
+              title: 'Somthing went wrong', content: 'Invalid email');
+        }
       }
       CustomDialog.dismissLoader();
     }
   }
 
-  static Future<void> signOutUser() async {
+  static Future<void> signOutUser(BuildContext context) async {
     try {
-      await FirebaseAuth.instance.signOut();
+      await FirebaseAuth.instance.signOut().then((value) {
+        Provider.of<AuthScreenProvider>(context, listen: false).clearField();
+      });
+
       Logger().f('User Signout');
     } catch (error) {
       Logger().e(error);
+    }
+  }
+
+  static Future<void> sendPasswordResetEmail(
+      String email, BuildContext context) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      if (context.mounted) {
+        Provider.of<AuthScreenProvider>(context, listen: false).clearField();
+        CustomDialog.showDialog(context,
+            title: 'Success', content: 'Please check your email');
+      }
+      CustomDialog.dismissLoader();
+    } catch (e) {
+      if (context.mounted) {
+        CustomDialog.showDialog(context,
+            title: 'Somthing went wrong', content: e.toString());
+      }
+      CustomDialog.dismissLoader();
     }
   }
 }

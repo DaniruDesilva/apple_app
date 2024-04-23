@@ -71,6 +71,13 @@ class _AuthScreenState extends State<AuthScreen> {
                     const SizedBox(
                       height: 20,
                     ),
+                    type == 'signup'
+                        ? CustomTextField(
+                            hint: 'Name',
+                            prefixIcon: Icons.person,
+                            controller: authStates.nameController,
+                          )
+                        : const SizedBox(),
                     CustomTextField(
                       hint: 'Email',
                       prefixIcon: Icons.email,
@@ -93,7 +100,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                   setState(() {
                                     type = 'forgot';
                                   });
-                                  
+                                  authStates.clearField();
                                 },
                                 child: const Text(
                                   'Forgot Password?',
@@ -123,6 +130,8 @@ class _AuthScreenState extends State<AuthScreen> {
                           authStates.startSignUp(context);
                         } else if (type == 'signin') {
                           authStates.startSignIn(context);
+                        } else if (type == 'forgot') {
+                          authStates.startSendPasswordRestEmail(context);
                         }
                       },
                     ),
