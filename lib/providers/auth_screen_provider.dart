@@ -15,6 +15,14 @@ class AuthScreenProvider extends ChangeNotifier {
       _confirmPasswordController;
   TextEditingController get nameController => _nameController;
 
+  String _splashStateType = 'authScreen';
+  String get splashStateType => _splashStateType;
+
+  void setSpalshState(String type) {
+    _splashStateType = type;
+    notifyListeners();
+  }
+
   void startSignUp(BuildContext context) {
     if (_emailController.text.trim().isEmpty) {
       CustomDialog.showDialog(context,
