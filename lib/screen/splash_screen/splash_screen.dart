@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
           ? Future.delayed(const Duration(seconds: 3))
           : widget.type == 'addData'
               ? UserController().saveUserData(context)
-              : Future.delayed(const Duration(seconds: 5)),
+              : UserController().fetchUserData(context),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(

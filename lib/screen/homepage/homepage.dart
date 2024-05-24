@@ -1,9 +1,11 @@
+import 'package:apple_app/screen/homepage/home/profile/profile_view/profile_view.dart';
+import 'package:apple_app/utils/custom_navigator.dart';
 import 'package:flutter/material.dart';
 
-import 'widget/categories.dart';
-import 'widget/custom_app_bar.dart';
-import 'widget/product_grid.dart';
-import 'widget/slider.dart';
+import 'home/widget/categories.dart';
+import 'home/widget/custom_app_bar.dart';
+import 'home/widget/product_grid.dart';
+import 'home/widget/slider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -47,6 +49,9 @@ class _HomePageState extends State<HomePage> {
                           icon: Icons.emoji_people,
                           color: Colors.green,
                           bgColor: Colors.green.shade100,
+                          onTap: () {
+                            CustomNavigator.push(context, const ProfileView());
+                          },
                         ),
                         CustomIconButton(
                           text: 'Favorite',
@@ -87,29 +92,34 @@ class CustomIconButton extends StatelessWidget {
       required this.text,
       required this.icon,
       this.color = Colors.blue,
-      this.bgColor = Colors.blue});
+      this.bgColor = Colors.blue,
+      this.onTap});
 
   final String text;
   final IconData icon;
   final Color color;
   final Color bgColor;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        CircleAvatar(
-            backgroundColor: bgColor,
-            child: Icon(
-              icon,
-              color: color,
-            )),
-        Text(
-          text,
-          style: const TextStyle(
-              fontSize: 12, fontWeight: FontWeight.w600, color: Colors.grey),
-        )
-      ],
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        children: [
+          CircleAvatar(
+              backgroundColor: bgColor,
+              child: Icon(
+                icon,
+                color: color,
+              )),
+          Text(
+            text,
+            style: const TextStyle(
+                fontSize: 12, fontWeight: FontWeight.w600, color: Colors.grey),
+          )
+        ],
+      ),
     );
   }
 }
