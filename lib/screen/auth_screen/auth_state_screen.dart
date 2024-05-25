@@ -15,7 +15,7 @@ class AuthStateScreen extends StatelessWidget {
         body: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
-            Logger().e('Refreshing...');
+            
             final splashType =
                 Provider.of<AuthScreenProvider>(context, listen: false)
                     .splashStateType;

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:apple_app/models/user_model.dart';
 import 'package:apple_app/providers/user_provider.dart';
 import 'package:apple_app/utils/custom_dialog.dart';
@@ -29,10 +31,10 @@ class UserController {
   Future<void> fetchUserData(BuildContext context) async {
     try {
       final uid = FirebaseAuth.instance.currentUser!.uid;
-      Logger().f(uid);
+
       await Future.delayed(const Duration(seconds: 2));
       final userData = await userCollection.doc(uid).get();
-      Logger().f(userData.data());
+
       UserModel user =
           UserModel.fromJson(userData.data() as Map<String, dynamic>);
       if (context.mounted) {
@@ -42,4 +44,10 @@ class UserController {
       Logger().e(e);
     }
   }
+
+  Future<void> updateUserData(File image, String name)async{
+    
+  }
+
 }
+
